@@ -1,14 +1,10 @@
-# Title (RegEx Tutorial)
+# Title (replace with your title)
 
 Introductory paragraph (replace this with your text)
 
 ## Summary
-Regular expressions, also known as RegEx, are sequences of characters that form a search pattern. RegEx can be used to determine if a string contains a specific search term parameter, and can be applied in many different circumstances, across multiple coding languages.
 
-The RegEx we will be breaking down searches for an email address pattern within a string. Please review the following code snippet:
-
-
-/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/
+Briefly summarize the regex you will be describing and what you will explain. Include a code snippet of the regex. Replace this text with your summary.
 
 ## Table of Contents
 
@@ -25,76 +21,63 @@ The RegEx we will be breaking down searches for an email address pattern within 
 - [Look-ahead and Look-behind](#look-ahead-and-look-behind)
 
 ## Regex Components
-The RegEx we are dissecting today has three elements that we will investigate further.
 
-Complete Regex for Reference: /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/
-
-Element 1: Username
-
-([a-z0-9_\.-]+)
-
-This element will check to match the username portion of the email address. It may contain any letters, any numbers, periods, underscores, or dashes.
-
-Example: mp[um@r12 would fail due to the special characters, howevermplumer12 would match.
-
-Element 2: Domain
-
-([\da-z\.-]+)
-
-This element will check to match the domain portion of the email address. It may contain letters, numbers and dashes.
-
-Example: domain_name would fail due to the underscore, however domain-name would match.
-
-Element 3: Suffix
-
-([a-z\.]{2,6})
-
-this element checks the suffix of the email address. Think ".com"/".edu". It may contain only letters, and they must be between 2 and 6 characters long.
-
-Example: .company would fail due to the character count, however .com would match.
-
-For additional breakdowns of how each element in this RegEx works, please see more details explanations below.
 ### Anchors
-Anchors encapsulate regex components to define what search pattern to find.
-
-Example: ^xyz$ where the ^ character indicates the start of a string, and the $ character indicates the end of a string
-In our example, we use two anchors. One at the beginning, and one at the end; to match the string (email address) we are searching for.
+    ^The        matches any string that starts with The -> Try it!
+    end$        matches a string that ends with end
+    ^The end$   exact string match (starts and ends with The end)
+    roar        matches any string that has the text roar in it
+### position???
+    ^ is the beginning of a line
+    $ is the end of a line
+    \b is a word boundary   EX: \b\w{7}\b finds words with only 7 letters
 ### Quantifiers
-+ = Repeats the previous item one or more times (Greedy Match)
-
-Example: a+ would return a positive match for all items where the a character occurs one or more times.
-
+    abc*        matches a string that has ab followed by zero or more c -> Try it!
+    abc+        matches a string that has ab followed by one or more c
+    abc?        matches a string that has ab followed by zero or one c
+    abc{2}      matches a string that has ab followed by 2 c
+    abc{2,}     matches a string that has ab followed by 2 or more c
+    abc{2,5}    matches a string that has ab followed by 2 up to 5 c
+    a(bc)*      matches a string that has a followed by zero or more copies of the sequence bc
+    a(bc){2,5}  matches a string that has a followed by 2 up to 5 copies of the sequence bc
 ### OR Operator
-{a,b} = defines a minimum a and a maximum b number of characters.
-
-Example: {2,6} would return a positive match for items containing between 2 and 6 characters
+    a(b|c)     matches a string that has a followed by b or c (and captures b or c) -> Try it!
+    a[bc]      same as previous, but without capturing b or c
+### Meta Characters
+    \d = 0-9     
+    \w = A-Z,a-z,0-9    \W = NOT A-Z,a-z,0-9
+    \s = whitespace     \S = NOT whitespace
+    . = any character
+    \. = period
 ### Character Classes
-. = Any character except newline
-
-When combined with the \ anchor, \.
-[a-z] = Accepts any letter between a and z
-
-[0-9] = Accepts any digit between 0 and 9
+    \d         matches a single character that is a digit -> Try it!
+    \w         matches a word character (alphanumeric character plus underscore) -> Try it!
+    \s         matches a whitespace character (includes tabs and line breaks)
 ### Flags
-
+    g (global) does not return after the first match, restarting the subsequent searches from the end of the previous match
+    m (multi-line) when enabled ^ and $ will match the start and end of a line, instead of the whole string
+    i (insensitive) makes the whole expression case-insensitive (for instance /aBc/i would match AbC)
 ### Grouping and Capturing
-Example: ([a-z0-9_\.-]+) where the () group together the [a-z0-9_\.-] bracket expression with the + quantifier.
-
-This regex matches any letter or number a-z or 0 to 9, accepts underscores, periods and dashes. Then the quantifier matches one or more of the previous tokens.
+    a(bc)           parentheses create a capturing group with value bc
+    a(?:bc)*        using ?: we disable the capturing group
+    a(?<foo>bc)     using ?<foo> we put a name to the group
 ### Bracket Expressions
-Bracket expressions are the syntax theory on combining character classes. Multiple character classes may be combined in a single bracket expression.
-
-Example: [a-z0-9] where the regex would match any letter or number.
+    [abc]            matches a string that has either an a or a b or a c -> is the same as a|b|c
+    [a-c]            same as previous
+    [a-fA-F0-9]      a string that represents a single hexadecimal digit, case insensitively
+    [0-9]%           a string that has a character from 0 to 9 before a % sign
+    [^a-zA-Z]        a string that has not a letter from a to z or from A to Z. In this case the ^ is used as negation of the expression
 ### Greedy and Lazy Match
-{a, } = Lazy match, searches number a or more
+    greedy * + {}
 
-{a,b} = greedy match, search BETWEEN numbers a and b
 ### Boundaries
-
+    \babc\b
 ### Back-references
-
+    \babc\b          performs a "whole words only" search
 ### Look-ahead and Look-behind
-
+    ([abc])\1              using \1 it matches the same text that was matched by the first capturing group -> Try it!
+    ([abc])([de])\2\1      we can use \2 (\3, \4, etc.) to identify the same text that was matched by the second (third, fourth, etc.) capturing group -> Try it!
+    (?<foo>[abc])\k<foo>   we put the name foo to the group and we reference it later (\k<foo>). The result is the same of the first regex -> Try it!
 ## Author
 
-A short section about the author with a link to the author's GitHub profile [GITHUB](#)
+A short section about the author with a link to the author's GitHub profile (replace with your information and a link to your profile)
